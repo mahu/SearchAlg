@@ -1,0 +1,75 @@
+\documentclass[11pt]{article}
+
+\usepackage{microtype}
+\usepackage{amsmath}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{enumitem}
+
+
+\setlength{\parindent}{0cm}
+\renewcommand\thesubsection{\alph{subsection})}
+
+\title{\textbf{Assignment 1\\}Search Algorithms}
+\author{Malik Al-hallak 90020\\
+		Sebastian Utzig 100059\\
+		Clemens Wegener 91268}
+\date{}
+\begin{document}
+
+\maketitle
+\section{Computational complexity theory}
+
+\setcounter{subsection}{1} %counter manuell erhöhen
+\subsection{}
+$f(n) = \Omega{(g(n))} \Longleftrightarrow \exists\: c>0,\exists \: n_0>0:c\cdot |g(n)|\leq|f(n)|$
+
+\section{Computational complexity theory}
+\subsection{}
+\emph{Computational Model}: NP problems can be solved by a non-deterministic Turing machine in polynomial time.
+
+\bigskip
+
+\emph{Ressource Limit}: \begin{itemize}[nosep]
+							\item computational time
+							\item \# of steps for solution
+							\item memory 
+						\end{itemize}
+
+\subsection{}
+NP-Hard problems define a class of problems whose solution algorithm working in polynomial time leads to a polynomial solution algorithm for problems in NP. Vice versa all problems in NP can be reduced to NP-Hard problems.
+
+\subsection{}
+Every NP-Hard Problem classified as NP is said to be NP-Complete.
+
+\subsection{}
+Since the left side of all production rules only contains single non-terminals it is said to be context-free.
+
+At the same time \emph{G} is not regular (Type-3) due to multiple terminals and non-terminals on the right side of the production rules.
+
+Therefore, the presented context-free non-regular grammar \emph{G} is of Type-2.
+
+\section{Computational complexity theory}
+\subsection{}
+The 3-SAT problem is a boolean satisfiability problem. 
+
+Given a formula in conjunctive normal form where each clause is limited to at most three literals, finding a configuration for the variables for which the formula evaluates to TRUE is NP-Complete. An \emph{instance} is for example:
+\begin{equation*}
+	F=(x_1 \lor x_2\lor x_3)\land(x_2\lor x_3 \lor x_4)\land(x_1 \lor x_2)
+\end{equation*}
+
+The \emph{decision} is to find a solution candidate in the search space which fullfills the given contraints.
+
+\subsection{}
+The vertex cover problem is a NP-Complete optimization problem in the graph theory. Given an \emph{instance} of a graph  $G=(V,E)$ the task (\emph{decision}) is to find a minimum set of vertices $V'$ for which hols:
+\begin{equation*}
+	\forall \: e \in E| e=(u,v):(u\in V')\lor (v \in V')
+\end{equation*}
+
+\subsection{}
+
+
+
+
+
+\end{document}
