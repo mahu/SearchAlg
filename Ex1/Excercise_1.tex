@@ -58,18 +58,36 @@ Given a formula in conjunctive normal form where each clause is limited to at mo
 	F=(x_1 \lor x_2\lor x_3)\land(x_2\lor x_3 \lor x_4)\land(x_1 \lor x_2)
 \end{equation*}
 
-The \emph{decision} is to find a solution candidate in the search space which fullfills the given contraints.
+Given such a (3-SAT) formula, the \emph{decision} problem is to decide, wether this formula is solvable. That means to find out, if there exists a solution candidate in the search space which fulfills the given constraints.
 
 \subsection{}
-The vertex cover problem is a NP-Complete optimization problem in the graph theory. Given an \emph{instance} of a graph  $G=(V,E)$ the task (\emph{decision}) is to find a minimum set of vertices $V'$ for which hols:
+The vertex cover problem is a NP-Complete optimization problem in the graph theory. Given an \emph{instance} of a graph  $G=(V,E)$ the task (\emph{decision}) is to find a minimum set of vertices $V'$ for which holds:
 \begin{equation*}
 	\forall \: e \in E| e=(u,v):(u\in V')\lor (v \in V')
 \end{equation*}
-
+In the decision variant of the vertex cover problem, an instance is a graph $G=(V,E)$ together with an integer number $k$. The decision is to decide, wether $G$ has a vertex cover of size $k$. 
 \subsection{}
 
 
+\section{Concepts}
 
+\subsection{Heuristic}
+A \textbf{heuristic} is a strategy to apply transformations. A \emph{heuristic function} is capable of assessing the closeness of a state to a solution and can therefore advise what transformation to apply to the actual encoding. However, a heuristic might not be the optimal strategy and thus might not find a solution in optimal time. A heuristic is specific to the problem domain and cannot be derived directly from the encoding.
 
+\subsection{Database, operators, and control strategy}
+A \textbf{database} is a symbol structure or code to represent each object in the search space \emph{S}.
 
+\textbf{Operators} are a mechanism to transform the encoding of some object in the search space to the encoding of another object in the search space.
+
+The \textbf{control strategy} is a mechanism to schedule transformations. Objective is to maximize effectiveness: find the desired object as quickly as possible. It should also cover the whole search space and ideally, every object in the search space should only be considered once. A control strategy fulfilling these requirements is called \emph{systematic}. 
+
+\subsection{Code or encoding}
+An \textbf{encoding} is a symbol structure or code to represent each object in the search space. Objects can be solution candidates or subsets of the search space containing multiple solution candidates. E.g, the encoding of a path in the traveling salesman problem.:
+\begin{equation*}
+A \rightarrow B \rightarrow D \rightarrow C \rightarrow F \rightarrow E \rightarrow A
+\end{equation*}
+Here, each letter represents a city to visit and the arrows the direction to follow. An encoding for a subset of solution candidates could be given via set notation as follows:
+\begin{equation*}
+A \rightarrow B \rightarrow \{C,D,E,F\} \rightarrow A
+\end{equation*}
 \end{document}
