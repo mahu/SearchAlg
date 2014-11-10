@@ -66,8 +66,17 @@ The vertex cover problem is a NP-Complete optimization problem in the graph theo
 	\forall \: e \in E| e=(u,v):(u\in V')\lor (v \in V')
 \end{equation*}
 In the decision variant of the vertex cover problem, an instance is a graph $G=(V,E)$ together with an integer number $k$. The decision is to decide, wether $G$ has a vertex cover of size $k$. 
-\subsection{}
+\subsection{Reduce 3-SAT to Vertex-Cover Problem}
+To reduce the 3-SAT Problem to the Vertex-Cover Problem with $k=v+2\cdot c$ (v-\# of variables, c-\# of clauses) one has to consider two transformations.
 
+\paragraph{Variable-Transformation}
+For each variable $x$ in the formula two nodes for the resulting graph \emph{G} are created. Each of the two nodes represent one state of the boolean variable: $x$ and $\lnot x$
+
+\paragraph{Clause-Transformation}
+For each variable $x$ in a clause $c$ from the formula one node is created. The three resulting nodes are connected. After the clause transformation three new nodes have to be created. If a clause just contains two or one variable then for one variable two or more nodes are created.
+\bigskip
+
+After all variables and clauses are processed, several sub-graphs are created. These sub-graphs are then connected by connecting nodes which represent the same state of the same variable. The vertex cover of the resulting graph describes the solution of the satisfiability of the formula. If the solution graph has a vertex cover of $k=v+2\cdot c$ then the formula is satisfiable.
 
 \section{Concepts}
 
