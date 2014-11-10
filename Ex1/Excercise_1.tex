@@ -55,6 +55,7 @@ The 3-SAT problem is a boolean satisfiability problem.
 
 Given a formula in conjunctive normal form where each clause is limited to at most three literals, finding a configuration for the variables for which the formula evaluates to TRUE is NP-Complete. An \emph{instance} is for example:
 \begin{equation*}
+%TODO Strich drüber !!!
 	F=(x_1 \lor x_2\lor x_3)\land(x_2\lor x_3 \lor x_4)\land(x_1 \lor x_2)
 \end{equation*}
 
@@ -73,10 +74,14 @@ To reduce the 3-SAT Problem to the Vertex-Cover Problem with $k=v+2\cdot c$ (v-\
 For each variable $x$ in the formula two nodes for the resulting graph \emph{G} are created. Each of the two nodes represent one state of the boolean variable: $x$ and $\lnot x$
 
 \paragraph{Clause-Transformation}
-For each variable $x$ in a clause $c$ from the formula one node is created. The three resulting nodes are connected. After the clause transformation three new nodes have to be created. If a clause just contains two or one variable then for one variable two or more nodes are created.
+For each variable $x$ in a clause $c$ from the formula one node is created. The three resulting nodes are connected. After the clause transformation three new nodes have to be created. If a clause just contains two or one variable then for one variable two or three nodes are created.
 \bigskip
 
-After all variables and clauses are processed, several sub-graphs are created. These sub-graphs are then connected by connecting nodes which represent the same state of the same variable. The vertex cover of the resulting graph describes the solution of the satisfiability of the formula. If the solution graph has a vertex cover of $k=v+2\cdot c$ then the formula is satisfiable.
+After all variables and clauses are processed, several sub-graphs are created. These sub-graphs are then connected by connecting nodes which represent the same state of the variable. The vertex cover of the resulting graph describes the solution of the satisfiability of the formula. If the solution graph has a vertex cover of $k=v+2\cdot c$ then the formula is satisfiable. 
+
+\bigskip
+
+To decide whether the formula is satisfiable, we solve the vertex cover-problem by first marking one node for each variable of the related variable-transformation sub-graph. For each marked vertex, we identify the corresponding node in the clause-transformation sub-graph and mark its neighbors. If the number of all marked vertices equals to $k=v+2\cdot c$ the formula is solvable.
 
 \section{Concepts}
 
@@ -99,4 +104,7 @@ Here, each letter represents a city to visit and the arrows the direction to fol
 \begin{equation*}
 A \rightarrow B \rightarrow \{C,D,E,F\} \rightarrow A
 \end{equation*}
+
+\section{8-Puzzle Problem}
+The encoding does not meet the requirements for a systematic search because one can have cycles in the operator sequence and therefore, it is not efficient. Furthermore, if we encounter a loop we cannot guarantee to reach every state. For this reason the encoding is not guaranteed to be effective.
 \end{document}
