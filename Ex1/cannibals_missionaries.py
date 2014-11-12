@@ -91,6 +91,12 @@ def check_states_are_equal(first_state, second_state):
 			right_first['C'] == right_second['C']:
 				return True
 	return False
+#check if state is conatained in state-list
+def check_contains_state(state, search_list):
+	for s in search_list:
+		if check_states_are_equal(state,s):
+			return True
+	return False
 
 # some print functions
 
@@ -162,7 +168,7 @@ while len(queue) > 0:
 		#check if the states are equal
 		if check_states_are_equal(new_state,goal_state):
 			solutions.append((new_visited, new_oplist))
-		elif new_state not in visited:
+		elif not check_contains_state(new_state, visited):
 			queue.append((new_visited, new_oplist))
 
 #print solutions in a table
