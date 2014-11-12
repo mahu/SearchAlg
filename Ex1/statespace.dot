@@ -11,7 +11,7 @@ graph [rankdir = TB]
 	"0231 R"->"0330 L" [label="01 L", color="#4BBCF6"]
 	"0330 L"->"0132 R" [label="02 R", color="#4BBCF6"]
 	"0132 R"->"1122 L" [label="10 L", color="#4BBCF6"]
-	"1122 L"->"0033 R" [label="11 R", color="#4BBCF6"]
+	"1122 L"->"0033 R" [label="11 R", color="#4BBCF6",shape=doublecircle]
 
 	"3300 L"->"2211 R" [label="11 R"]
 	"3300 L"->"3201 R" [label="01 R"]

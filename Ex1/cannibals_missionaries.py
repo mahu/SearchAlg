@@ -1,3 +1,9 @@
+"""
+Solution for Assignment 1 Excercise 7b)
+Malik Al-hallak 90020
+Sebastian Utzig 100059
+Clemens Wegener 91268
+"""
 from itertools import chain, combinations
 from collections import Counter as Multiset
 
@@ -91,7 +97,7 @@ def check_states_are_equal(first_state, second_state):
 			right_first['C'] == right_second['C']:
 				return True
 	return False
-#check if state is conatained in state-list
+#check if state is conatained in state-listd
 def check_contains_state(state, search_list):
 	for s in search_list:
 		if check_states_are_equal(state,s):
