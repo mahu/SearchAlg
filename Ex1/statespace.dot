@@ -1,0 +1,44 @@
+digraph G
+{
+graph [rankdir = TB]
+	"3300 L"->"3102 R" [label="02 R", color="#4BBCF6"]
+	"3102 R"->"3201 L" [label="01 L", color="#4BBCF6"]
+	"3201 L"->"3003 R" [label="02 R", color="#4BBCF6"]
+	"3003 R"->"3102 L" [label="01 L", color="#4BBCF6"]
+	"3102 L"->"1122 R" [label="20 R", color="#4BBCF6"]
+	"1122 R"->"2211 L" [label="11 L", color="#4BBCF6"]
+	"2211 L"->"0231 R" [label="20 R", color="#4BBCF6"]
+	"0231 R"->"0330 L" [label="01 L", color="#4BBCF6"]
+	"0330 L"->"0132 R" [label="02 R", color="#4BBCF6"]
+	"0132 R"->"1122 L" [label="10 L", color="#4BBCF6"]
+	"1122 L"->"0033 R" [label="11 R", color="#4BBCF6"]
+
+	"3300 L"->"2211 R" [label="11 R"]
+	"3300 L"->"3201 R" [label="01 R"]
+	"3300 L"->"2310 R" [label="10 R"]
+	"3300 L"->"1320 R" [label="20 R"]
+	
+	"3102 R"->"3300 L" [label="02 L"]
+	
+	"3201 L"->"3102 R" [label="01 R"]
+	"3201 L"->"2211 R" [label="10 R"]
+	"3201 L"->"2112 R" [label="11 R"]
+	"3201 L"->"1221 R" [label="20 R"]
+
+	"3003 R"->"3201 L" [label="02 L"]
+
+	dummy1[label="..."]
+	dummy2[label="..."]
+	dummy3[label="..."]
+	dummy4[label="..."]
+	dummy5[label="..."]
+	dummy6[label="..."]
+
+	"2211 R"-> dummy1
+	"3201 R"-> dummy2
+	"2310 R"-> dummy3
+	"1320 R"-> dummy4
+
+	"1221 R"-> dummy5
+	"2112 R"-> dummy6
+}
