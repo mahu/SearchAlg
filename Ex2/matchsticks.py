@@ -1,5 +1,10 @@
 #!/usr/bin/python
-
+"""
+Solution for Assignment 2 Excercise 1f)
+Malik Al-hallak 90020
+Sebastian Utzig 100059
+Clemens Wegener 91268
+"""
 from optparse import OptionParser 
 
 #Function returns the next target number, only used for testing purposes 
@@ -22,10 +27,14 @@ def next_move(move_number, number_of_matchsticks):
 		take = (what_to_take[current_number_of_sticks%target_steps])
 		#did we already win?
 		if current_number_of_sticks-take == 1:
-			print "\t"*move_number + "move "+str(move_number)+": if opponent takes " + str(opponent_move) + " -> take " +str(take) + "(You win.)"
+			print "\t"*move_number + "move "+str(move_number)+ \
+				": if opponent takes " + str(opponent_move) + " -> take " + \
+				str(take) + "(You win.)"
 		#or do we have to go deeper?	
 		else:
-			print "\t"*move_number + "move "+str(move_number)+": if opponent takes " + str(opponent_move) + " -> take " +str(take) + "(" + str(current_number_of_sticks-take)+" left)"
+			print "\t"*move_number + "move "+str(move_number)+ \
+				": if opponent takes " + str(opponent_move) + " -> take " + \
+				str(take) + "(" + str(current_number_of_sticks-take)+" left)"
 			next_move(move_number+1,current_number_of_sticks-take)
 
 #Just a helper function do pretty print the take-options
@@ -37,8 +46,10 @@ def print_options():
 usage = "usage: %prog [options]"
 parser = OptionParser(usage)
 
-parser.add_option("-s", "--sticks", action="store", type= "int",dest="sticks", default=7, help="specifies the number of matchsticks on the table")
-parser.add_option("-m", "--moves" , action="store", type= "int",dest="moves", default=3, help="the maximum number of matchsticks a player can take away in one round")
+parser.add_option("-s", "--sticks", action="store", type= "int",dest="sticks",
+	default=7, help="specifies the number of matchsticks on the table")
+parser.add_option("-m", "--moves" , action="store", type= "int",dest="moves", 
+	default=3, help="the maximum number of matchsticks a player can take away in one round")
 
 (options,args) = parser.parse_args()
 
