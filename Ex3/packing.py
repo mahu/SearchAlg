@@ -3,7 +3,16 @@ Solution for Assignment 3 Excercise 7f)
 Malik Al-hallak 90020
 Sebastian Utzig 100059
 Clemens Wegener 91268
+
+Solution for bin packing problem using BF* 
+because of underlying state-space representation.
+State-space representations are appropriate for 
+non-decomposable problems.
 """
+
+# example call:
+# python packing.py -p 20 -w 1,4,6,7,7,9,11,13,15,16
+
 from optparse import OptionParser
 import copy
 from operator import attrgetter
@@ -15,22 +24,20 @@ class State:
 
 	weights = []
 	packages = []
-	to_be_inserted_weight = 0
 	insertion_cost = 1
 
-	def __init__(self,weights,packages,tbi,ic):
+	def __init__(self,weights,packages,ic):
 		self.weights = weights
 		self.packages = packages
-		self.to_be_inserted_weight = tbi
 		self.insertion_cost = ic
 
-	def print_state(self):
-		print("------State------")
-		print("weights: " + str(self.weights))
-		print("packages: " + str(self.packages))
-		print("next insertion: " + str(self.to_be_inserted_weight))
-		print("accumulated cost with last insertion: " + str(self.insertion_cost) + " package(s)")
-		print("-----------------")
+	def __str__(self):
+		return "------State------\n" +\
+		"Weights: " + str(self.weights) +"\n" +\
+		"Packages: " + str(self.packages) + "\n"+\
+		"Accumulated cost with last insertion: " + str(self.insertion_cost) + " package(s)\n" +\
+		"-----------------"
+
 
 def parse_list(astr):
     result=[];
@@ -38,86 +45,65 @@ def parse_list(astr):
         result.append(int(part))
     return result
 
+
 def expand_state(cur_state):
 
 	#if isnt leaf node:
 	if len(cur_state.weights) != 0 :
 
+		# for all successors we need to push a new weight into packages
+		new_weights = copy.deepcopy(cur_state.weights)
+		to_be_inserted_weight = new_weights.pop()
+
 		package_id = 0
 
+		# check available space in already existing packages
 		for package in cur_state.packages:
 			total_weight = 0
 			for weight in package:
 				total_weight+=weight
 
-			# add to existing package
-			if total_weight + cur_state.to_be_inserted_weight <= weight_per_package:
-				new_state = create_successor(cur_state)
-				new_state.packages[package_id].append(cur_state.to_be_inserted_weight)
+			# add to existing package if we are under weight_per_package limit
+			if total_weight + to_be_inserted_weight <= weight_per_package:
+				new_state = State(new_weights,copy.deepcopy(cur_state.packages),cur_state.insertion_cost)
+				new_state.packages[package_id].append(to_be_inserted_weight)
 				OPEN.append(new_state)
 			
 			package_id+=1
 
-		# create new package once is always an option
-		new_state = create_successor(cur_state)
-		new_state.packages.append([cur_state.to_be_inserted_weight])
-		new_state.insertion_cost+=1
+		# create new package once (is always an option)
+		new_state = State(new_weights,copy.deepcopy(cur_state.packages),cur_state.insertion_cost)
+		new_state.packages.append([to_be_inserted_weight])
+		new_state.insertion_cost+=1 # since we created a new package, the cost increases
 		OPEN.append(new_state)
 
 	else:
-		print_solution(cur_state)
 
-def print_solution(cur_state):
+		# delayed termination (reached the first leaf node which is minimum because of accumulated costs)
+		print("\nSolution found: ")
+		print("---------------")
+		print(str(cur_state))
 
-	package_id = 0
-	for package in cur_state.packages:
-		total_weight = 0
-		for weight in package:
-			total_weight+=weight
-
-		# add to existing package
-		if total_weight + cur_state.to_be_inserted_weight <= weight_per_package:
-
-			final_packages = copy.deepcopy(cur_state.packages)
-			final_packages[package_id].append(cur_state.to_be_inserted_weight)
-			print("Solution found: ")
-			print("---------------")
-			print("packages:")
-			print(final_packages)
-			print(" ")
-			print("final costs:")
-			print(cur_state.insertion_cost)
-
-
-		package_id+=1
 		exit()
-
-
-def create_successor(cur_state):
-
-	new_weights = copy.deepcopy(cur_state.weights)
-	tbi = new_weights.pop()
-	new_state = State(copy.deepcopy(new_weights),copy.deepcopy(cur_state.packages),tbi,cur_state.insertion_cost)
-	return new_state
 
 
 def find_min():
 
 	global OPEN;
 
-	OPEN = sorted(OPEN, key=attrgetter('insertion_cost'), reverse=True) # sort by insertion_cost
+	# sort by insertion_cost
+	OPEN = sorted(OPEN, key=attrgetter('insertion_cost'), reverse=True)
 
 	# remove min from OPEN
 	min_state = OPEN.pop()
 	
 	# push min into CLOSED
 	CLOSED.append(min_state)
+
 	return min_state
 
 
 
-
-#parser stuff
 usage = "usage: %prog [options]"
 parser = OptionParser(usage)
 
@@ -131,16 +117,15 @@ parser.add_option("-p", "--weight_per_package" , action="store", type= "int",des
 #input parameter
 weights = parse_list(options.weights)
 weight_per_package = options.weight_per_package
-################################################
-#end parser stuff
+
 
 #start state: no packages, full weights
 packages = []
-to_be_inserted_weight = weights.pop()
-start_state = State(weights,packages,to_be_inserted_weight,0);
+start_state = State(weights,packages,0);
 
 OPEN.append(start_state);
 
+# delayed termination in expand_state() will exit loop if minimum is found
 while True:
 
 	current_state = find_min()
