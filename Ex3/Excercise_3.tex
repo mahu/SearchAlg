@@ -89,6 +89,60 @@
   17	&	$\emptyset$								&	6(53)
  \end{tabular}
 \section{Uniform cost search}
+If all weights in a graph are $1$ then uniform cost search behaves like breadth-first search. This is due to the fact that the longer the path from one node to the start node is, the bigger is the weight associated weight and hence, the later this node will be considered. This is the same with breadth first search.
+
+\setcounter{section}{4}
+\section{Special cost functions}
+\subsection{}
+No, please have a look at b) and c).
+
+\subsection{}
+$P(0)= 6\rightarrow 7\rightarrow 8\rightarrow 14\rightarrow 12\rightarrow 15 \rightarrow 0$\\
+$f(0) = |19-7| = 12$
+
+\subsection{}
+No because the subpath $P_1(14)=6\rightarrow 7 \rightarrow 8 \rightarrow 14$ costs $7$ whereas $P_2(14)= 6 \rightarrow 8 \rightarrow 14$ has costs of $6$.
+
+\section{Recursive cost functions}
+\begin{enumerate}
+	\item Shared computation:\\
+	\indent Already computed evaluation results for a solution base $G$ are exploited for other solution bases that contain $G$
+	\item Selective updating:\\
+	\indent Only the predecessors of a newly explored node need to be updated.
+\end{enumerate}
+\section{State space search}
+\subsection{}
+Since the packaging problem is not decomposable an OR-graph is the suitable representation. We cannot determine any independent subproblem.
+
+\subsection{}
+The nodes represent already packaged weights and the remaining weights to pack. The edges indicate if a weight is inserted into a new created package ($1$) or into an already existing one ($0$).
+
+\subsection{}
+The list of remaining weights to pack is empty and the sum of weights for each package is $\leq 20$kg. Due to this condition all reached leaf nodes are solutions and dead ends are avoided.
+
+\subsection{}
+The cost equals to the sum of the already created packages times the cost per package. Each edge has either a cost of $0$ (no new package created) or $1$ ( a new package was created). The cost of a state is then determined by accumulating the costs associated with the edges on the path.
+
+\subsection{}
+We can calculate a lower bound $B$ by adding the already accumulated cost $C$ to an optimistic rest cost:
+
+\begin{align*}
+	B=C + \frac{\displaystyle{\sum_{w\in Weights}w}}{max\_weight\_per\_package}
+\end{align*}
+
+\subsection{}
+Pleas find the code in the attached file \texttt{packing.py}
+
+\subsection{}
+\textbf{Output:}\\
+\texttt{Solution found:\\ 
+---------------\\
+------State------\\
+Weights: []\\
+Packages: [[16], [15], [13, 7], [11, 9], [7, 6, 4, 1]]\\
+Accumulated cost with last insertion: 5 package(s)\\
+-----------------\\
+}
 
 
 \end{document}
