@@ -1,0 +1,58 @@
+\documentclass[11pt]{article}
+
+\usepackage{microtype}
+\usepackage{amsmath}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{enumitem}
+
+
+\setlength{\parindent}{0cm}
+\renewcommand\thesubsection{\alph{subsection})}
+
+\title{\textbf{Assignment 3\\}Search Algorithms}
+\author{Malik Al-hallak 90020\\
+		Sebastian Utzig 100059\\
+		Clemens Wegener 91268}
+\date{}
+\begin{document}
+
+\maketitle
+\section{Optimistic heuristic}
+\subsection{}
+The cost function $\hat{C_1}$ is not optimistic, since it does not always underestimates or correctly estimates the true cost. We can show that if we move tile 6 from the goal state to the lower right corner, the true cost would be $1$ whereas $\hat{C_1}$ would estimate the cost with $2$ ($1$ for tile 6 and $1$ for the empty tile).
+
+\subsection{}
+The cost function $\hat{C_2}$ is optimistic. Let us consider the case that all tiles don't block each other while moving from the start to their destination location. In this case the true cost would be equal to the Manhattan distance. Therefore, $\hat{C_2}$ is a lower bound for the true cost. But since the tiles block each other, one has to consider the moves of the current moved tile and the moves of the tiles that give way for this tile to pass. This is always greater or equal to the Manhattan distance.
+
+\newpage
+\subsection{}
+It holds neither $\hat{C_1}(A)\geq\hat{C_2}(A)$ nor $\hat{C_1}(A)\leq\hat{C_2}(A)$.
+\\\\$\hat{C_1}(A)\geq\hat{C_2}(A)$:\\
+For every state A where two not adjacent tiles are swapped it holds that:
+\begin{itemize}
+	\item $\hat{C_1}(A)=2$ and $\hat{C21}(A)\geq 4$
+\end{itemize}
+$\hat{C_1}(A)\leq\hat{C_2}(A)$:\\
+This case can be disproved by the example given in the solution for exercise 1a). \begin{itemize}
+	\item $\hat{C_1}(A)=2$ and $\hat{C_2}(A)=1$
+\end{itemize}
+
+\setcounter{section}{2}
+\section{Uniformed cost search in infinite graphs}
+Yes, uniform cost search always terminates with a solution if one exist. Because even if there are infinite nodes, the distance between the start $s$ and a goal node $\gamma$ is finite. We cannot get lost in the graph during the search. The costs during the search are increasing monotonically since the costs are from the domain of the natural numbers. Therefore, at some point the accumulated cost exceeds the cost for the path to the goal node.
+
+\section{Optimum solution in OR-graphs}
+Yes, an optimal solution can be found. If one has found a solution, we can introduce a cut in the graph with the current optimum. This remaining graph can then be searched until a better optimum is found. If no better optimum is found, the current optimum is the real optimum otherwise the graph cut is updated.
+
+\section{Cost measures}
+No, the cost function doesn't seem to be recursive. Since it has no set of local properties, it is not possible to get the cost of the leaf nodes, which solely depends on the local properties($E(n)$) of the node. Without the cost for the leaf node, the other costs cannot be determined. Furthermore no $F$-function is present, which could combine local properties and successor properties.
+
+
+\section{Cost function in problem reduction search}
+\subsection{}
+An suitable encoding is to represent the different states as $k\times k$-Matrix. Each entry of the Matrix is either $0$ (an untouched field), $1$ (a field with a X) or $-1$ (a field with an O). An operator then would be a tuple $(row,column,player)$ where $row,column \in \{0\dots k\}$ and $player \in \{1,-1\}$. Valid operators are those which $row$ and $column$ values refer to an untouched field.
+
+\subsection{}
+Unfortunately it was not feasible to determine the cost for the states with $C^*(n)$ as given above. For this reason we cannot determine a \emph{most promising solution base} as mentioned in \emph{GBF} or \emph{GBF*}. Therefore we don't have the rest of the task.
+\end{document}
