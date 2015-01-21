@@ -1,0 +1,131 @@
+\documentclass[11pt]{article}
+
+\usepackage{microtype}
+\usepackage{amsmath}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{latexsym}
+\usepackage{xcolor}
+
+\usepackage{hyperref}
+\hypersetup{
+ colorlinks=true,
+ citecolor=violet,
+ linkcolor=red,
+ urlcolor=blue}
+\setlength{\parindent}{0cm}
+\renewcommand\thesubsection{\alph{subsection})}
+
+\title{\textbf{Assignment 5\\}Search Algorithms}
+\author{Malik Al-hallak 90020\\
+		Sebastian Utzig 100059\\
+		Clemens Wegener 91268}
+\date{}
+\begin{document}
+
+\maketitle
+\section{Uniform cost search as a special case of A*}
+	Uniform cost search always takes the node with the smallest cost value $g$ from the OPEN list. A* takes additionally the heuristic value $h$ in consideration and chooses the node with the smallest $(g+h)$--value. Under the assumption, that $h = 0$ uniform cost search and A* would in each iteration take the same nodes from the OPEN list. The order of nodes, which are selected from the OPEN list is the same for A* and uniform cost search and therefore, the search is the same.
+\section{}
+	We consider two cases:
+	\begin{itemize}
+		\item $|V|=1 \rightarrow |\mathcal{G}_{max}|=1$
+		\item $|V|>1 \rightarrow |\mathcal{G}_{max}=|V-1|=|V_{OPEN}|$
+	\end{itemize}
+\section{Proof by Induction: Lemma 35 (Shallowest Open Node on Optimum Path), Step 2}
+
+Let $s, n_1, \dots, n_i, n_{i+1}$ be the initial part of $P^*_{s-n}$, let $s, n_1, \dots, n_i$ be expanded and $n_{i+1}$ is the shallowest node ($n'$) on the optimal path $P^*_{s-n}$.
+We need to show:
+
+\begin{equation*}
+\Rightarrow g(n_{i+1})=g^*(n_{i+1})
+\end{equation*}
+
+\subsubsection*{Proof:}
+\begin{enumerate}
+\item Base Case.
+\begin{equation*}
+g(s)=0=g^*(s)
+\end{equation*}
+
+\item Induction Hypothesis.
+\begin{equation*}
+g(n_{i+1})=g^*(n_{i+1})
+\end{equation*}
+
+\item Induction Step.
+\begin{equation*}
+g(n_{i+1})=g(n_i)+ c(n,n_{i+1}) 
+\end{equation*}
+ Now we can assume $
+g(n_i)=g^*(n_i)$ and have:
+\begin{equation*}
+g(n_{i+1})=g^*(n_i)+ c(n,n_{i+1})\end{equation*}
+Because $n_i$ and $n_{i+1}$ are on an optimal subpath of $P^*_{s-n}$ (with Implications of Lemma 33), $c(n,n_{i+1})$ are minimal costs, hence:
+\begin{align*}
+g(n_{i+1})&=g^*(n_i)+k(n,n_{i+1})\\
+&=k(s,n_i)+k(n,n_{i+1})\\
+&=k(s,n_{i+1})\\
+&=g^*(n_{i+1})
+\end{align*}
+We have shown, that $g(n)=g^*(n), \forall n \in P^*_{s-n}$, when they are reached from previous optimal paths. This holds in particular, for the shallowest open node $n'$ on $P^*_{s-n}$.
+\hfill $\Box$
+\end{enumerate}
+
+\section{Under which conditions is the CLOSED list unnecessary for A* search?}
+We identified two collections of circumstances, where a CLOSED list is unnecessary for A* search.
+\subsection{}
+
+For $G$ holds $Prop(G)$ and additionally:
+\begin{itemize}
+\item $G$ is cycle free
+\item $h=const.$ (we are essentially performing uninformed search)
+\item $|E|=|V-1|$ \quad $\Rightarrow G$ is a tree
+\end{itemize}
+
+\subsection{}
+For $G$ holds $Prop(G)$ and additionally:
+\begin{itemize}
+\item $G$ is cycle free
+\item $h=const.$ (we are essentially performing uninformed search)
+\end{itemize}
+Here we have to modify A* slightly: It has to lookup predecessors of all nodes in OPEN by their back pointers, to check, if a node was already visited.
+
+\setcounter{section}{6}
+\section{Uniformed cost search in infinite graphs}
+
+\subsection{}
+The $8-puzzle$ can have $9!=362880$ different states.
+
+\subsection{}
+We can determine if a state is solvable by applying the following algorithm:
+\begin{enumerate}
+	\item Write the state in a linear way and ignore the $0$ tile \\(e.g. $s_1=[6,4,7,8,5,3,2,1]$)
+	\item initialize $i=0$ and $j=i+1$
+	\item Determine the number of inversions\\\\$inversions(s) = \displaystyle{\sum_{i=0}^6\left(\sum_{j=i+1}^7x_{ij}\right)}$ with $x_{ij}=
+	\begin{cases}
+    	1,		& \text{if } s[i]>s[j]\\
+   		0,      & \text{otherwise}
+	\end{cases}$\\\\(e.g. $inversions(s_1)=22$)
+	\item Check if  $solvable(s) = \begin{cases}
+    	True,		& \text{if } inversions(s) \mod 2 = 0\\
+   		False,      & \text{otherwise}
+	\end{cases}$
+\end{enumerate}
+Since the number of even states equals the number of odd states, the goal-state $\gamma$ is only reachable from $\frac{9!}{2}=181440$ different states. This is due to the fact that only states with an even number of \emph{inversions} is solvable\footnote{Idea taken from: \url{http://www.cs.bham.ac.uk/~mdr/teaching/modules04/java2/TilesSolvability.html} }. Furthermore it is impossible to reach an unsolvable state from a solvable state. Therefore it is sufficient to check if the start state is solvable. 
+\subsection{}
+Yes, G fulfills $prop(G)$
+\subsection{}
+All three heuristics $h_0,h_1$ and $h_2$ are optimistic.
+
+\subsection{}
+Please find the implementation attached in the file \texttt{8puzzle.py} (the option \texttt{-h} will give you an overview of the options). The implementation also regards unsolvable states and exits if the start state is unsolvable. We determined that $s_2$ has an odd number of inversions and hence is unsolvable. The necessary moves to reach the goal node are attached in the files \texttt{8\_puzzle\_S1\_H0.txt}, \texttt{8\_puzzle\_S1\_H1.txt} and \texttt{8\_puzzle\_S1\_H2.txt} For $s_1$ with $h_0$ all possible nodes (except the goal node) have to be expanded. This equals $181439$ nodes.
+
+\subsection{}
+For $s_1$ with $h_1$ the number of expanded nodes decreases to $143246$.
+
+\subsection{}
+For $s_1$ with $h_2$ the number of expanded nodes decreases to $17949$.
+ 
+\end{document}
