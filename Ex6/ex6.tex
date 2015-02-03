@@ -1,0 +1,51 @@
+\documentclass[11pt]{article}
+
+\usepackage{microtype}
+\usepackage{amsmath}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{latexsym}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{hyperref}
+\hypersetup{
+ colorlinks=true,
+ citecolor=violet,
+ linkcolor=red,
+ urlcolor=blue}
+\setlength{\parindent}{0cm}
+\renewcommand\thesubsection{\alph{subsection})}
+
+\title{\textbf{Assignment 6\\}Search Algorithms}
+\author{Malik Al-hallak 90020\\
+		Sebastian Utzig 100059\\
+		Clemens Wegener 91268}
+\date{}
+\begin{document}
+\maketitle
+
+\section{Admissibility}
+No, since the $Z$ algorithm does not use \emph{delayed termination} it will return the first goal node, without considering possible cheaper solutions which are still on OPEN. So $Z$ will return \emph{a} solution but it may will not be the optimal solution. The example below show that $Z$ would return $\gamma$ instead of $\gamma^*$, because $\gamma$ is reached before $\gamma^*$. The used heuristic in this example is optimistic and hence admissible.
+
+\begin{figure}[H]
+	\centering
+  \includegraphics[width=0.4\textwidth]{./graph.pdf}
+  \caption{Example $Z$ is not admissible}
+	\label{fig2}
+\end{figure}
+
+\section{Monotonicity}
+
+\subsection{}
+
+\subsection{}
+\paragraph{$h$ is admissible:}
+There are states where the heuristic and true costs are equal. In this case each knight move decreases and never increases the distance to the goal state. Here the heuristic is optimistic because it does not overestimate the true costs. The second case describes all states which are adjacent to the goal state. Here the knight has to increase the distance again to reach the goal node. But the heuristic underestimates the true costs with maximal $\frac{2}{3}$ but the true costs are always greater than $1$.
+\paragraph{$h$ is monotone:}
+Each knight move increases the costs by $1$. The heuristic decreases each move at most by $1$ when moving towards the goal state in both dimensions. In other cases the heuristics decreases by less than $1$.  
+
+\subsection{}
+
+
+\end{document}
