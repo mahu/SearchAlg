@@ -1,0 +1,16 @@
+digraph G
+{
+graph [rankdir = TB]
+	Root [label="s\nh=6"];
+	L1 [label="h=2"];
+	R1 [label="h=1"];
+	L2 [label="&#947;"]; #gamma
+	R2 [label="&#947;*"];
+	
+	"Root"->"L1" [label=" 3"]
+	"Root"->"R1" [label=" 5"]
+
+	"L1"->"L2" [label=" 4"]
+	"R1"->"R2" [label=" 1"]
+
+}
