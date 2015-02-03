@@ -314,6 +314,9 @@ def search(startstate,filename):
 		exit()
 	
 
+if not os.path.exists("./result/"):
+    print "\tCreate directory: ./result"
+    os.makedirs("./result/")
 
 
 
@@ -360,8 +363,6 @@ if not(check_sovable(startstate)):
 	exit()
 else:
 	print "Start search with state:\n" + str(startstate)+ "\nFound Zero on " + str(startstate.mZeroPosition)
-	print "Save results in \"" +filename+"\""
-
 
 goal_state = State([[1,2,3],[4,5,6],[7,8,0]],(2,2),0)
 
@@ -377,7 +378,7 @@ CLOSED_Hash = {}
 
 if searchAll:
 	try:
-		allFile = open("all_results.txt",'w')
+		allFile = open("./result/all_results.txt",'w')
 		eps_list = [0.125,0.25,0.5,1.0,2.0]
 		for tmpN in range(5,51,5):
 			for tmpEps in eps_list:
@@ -389,7 +390,7 @@ if searchAll:
 
 				N = tmpN
 				epsilon = tmpEps
-				filename = "8_Puzzle_" + state_name + "_"+str(tmpN) + "_" + str(tmpEps) + "_DWA.txt"
+				filename = "./result/8_Puzzle_" + state_name + "_"+str(tmpN) + "_" + str(tmpEps) + "_DWA.txt"
 
 				print "N= " + str(N) + " eps= " + str(epsilon)
 				
@@ -414,7 +415,7 @@ if searchAll:
 else:
 	#default filename
 	if filename == "":
-		filename = "8_Puzzle_" + state_name + "_"+str(N) + "_" + str(eps) + "_DWA.txt"
+		filename = "./result/8_Puzzle_" + state_name + "_"+str(N) + "_" + str(epsilon) + "_DWA.txt"
 
 	OPEN = []
 	CLOSED = []
