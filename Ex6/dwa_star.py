@@ -1,3 +1,9 @@
+"""
+Solution for Assignment 6 Excercise 7
+Malik Al-hallak 90020
+Sebastian Utzig 100059
+Clemens Wegener 91268
+"""
 import copy
 import time
 import threading
