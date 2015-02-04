@@ -17,9 +17,9 @@ class State:
 	mZeroPosition = None
 	mParent = None
 	mChildren = []
-	mCostsG = 0
-	mCostsH = 0
-	mCosts = 0
+	mCostsG = 0.0
+	mCostsH = 0.0
+	mCosts = 0.0
 
 	def __init__(self,mat,zero_pos,costs):
 		self.mMatrix = mat
@@ -50,13 +50,6 @@ class State:
 	
 	def __ge__(self,other):
 		return self.mCosts >= other.mCosts
-
-	def set_costs(self,costsH):
-		if self.mCostsG > self.mParent.mCostsG:
-			self.mCostsH = costsH
-			self.mCosts = self.mCostsH + self.mCostsG
-		else:
-			raise ValueError("Error successor has same costs like parent")
 
 
 #determine the valid operators of the current state
@@ -95,9 +88,7 @@ def valid_operators(state):
 	return neighbors
 
 #apply all valid operators to the current state to get the successors
-def expand_state(state):
-
-	global heuristic_function
+def expand_state(state,N=1.0,epsilon=1.0):
 
 	op = valid_operators(state)
 
@@ -125,9 +116,9 @@ def expand_state(state):
 			raise ValueError("Undefined Operator: Unknown cardinal direction!")
 
 		newState.mParent = state
-		newState.mCostsG += 1;
+		newState.mCostsG += 1.0;
 		
-		calc_dynamic_heuristic(newState)
+		calc_dynamic_heuristic(newState,N,epsilon)
 
 		newStates.append(newState)
 
@@ -163,9 +154,9 @@ def node_equal_state(state):
 
 	return False
 
-def calc_dynamic_heuristic(state):
+def calc_dynamic_heuristic(state,N=1.0,epsilon=1.0):
 	calc_h2(state)
-	calc_eps_h(state)
+	calc_eps_h(state,N,epsilon)
 
 
 def calc_h2(state):
@@ -186,11 +177,13 @@ def calc_h2(state):
 		error += abs(e[0])+abs(e[1])	
 	
 	
-	state.set_costs(error)
+	state.mCostsH = error
 
-def calc_eps_h(state):
-	global N , epsilon
-	state.mCosts = state.mCostsG + (1.0+(1.0-((min(state.mCostsG,N)/N)*epsilon)))*state.mCostsH
+def calc_eps_h(state,N=1.0,epsilon=1.0):
+
+	weight = (1.0-(min(state.mCostsG,N)/N))*epsilon
+	#print str(state.mCostsG) + " " + str(N) + " " + str(epsilon) + " " + str(weight)
+	state.mCosts = state.mCostsG + ((1.0+weight)*state.mCostsH)
 
 	#print state.mCosts
 
@@ -253,9 +246,9 @@ def parse_state(filename):
 	return State(stateMatrix,zero_pos,0)
 
 
-def search(startstate,filename):
+def search(startstate,filename,N=1.0, epsilon=1.0):
 
-	global OPEN, OPEN_Hash, CLOSED, CLOSED_Hash, startTime
+	global OPEN, OPEN_Hash, CLOSED, CLOSED_Hash, startTime, info_thread
 	
 	OPEN.append(startstate)
 	OPEN_Hash[str(startstate)] = startstate
@@ -295,23 +288,25 @@ def search(startstate,filename):
 					outputFile.write(str(tmp_state)+"\n\n")
 				#how many states where expanded
 				print len(CLOSED)
+				#how many steps did we take
+				print "Steps: " + str(steps)
 				#clean-up
 				outputFile.close()
 				return (len(CLOSED) , steps)
 
 			#expand the state and get the successors
-			successors = expand_state(min_state)
+			successors = expand_state(min_state,N, epsilon)
 
 			for s in successors:
 				#if state was already processed, this time would be more expensive
 				#-> only take states which are not processed yet
 				if node_equal_state(s) == False:
-					bisect.insort_right(OPEN,s)
+					bisect.insort_left(OPEN,s)
 					OPEN_Hash[str(s)]= s
 		
 	except KeyboardInterrupt:
 		print("\n")
-		exit()
+		return 0,0
 	
 
 if not os.path.exists("./result/"):
@@ -334,8 +329,8 @@ parser.add_option("-o", "--output", action="store", type= "string",dest="filenam
 	default="", help="file for result")
 parser.add_option("-s", "--state" , action="store", type= "string",dest="start_state_file", 
 	default="s1.txt", help="file which contains the startstate")
-parser.add_option("-n", "--depth" , action="store", type= "int",dest="depth", 
-	default=5, help="determine the anticipated depth of the desired goal node")
+parser.add_option("-n", "--depth" , action="store", type= "float",dest="depth", 
+	default=1.0, help="determine the anticipated depth of the desired goal node")
 parser.add_option("-e", "--epsilon" , action="store", type= "float",dest="epsilon", 
 	default=1.0, help="determine the epsilon for weighted f-function")
 parser.add_option("-a", "--all" , action="store_true", dest="search_all", 
@@ -380,28 +375,24 @@ if searchAll:
 	try:
 		allFile = open("./result/all_results.txt",'w')
 		eps_list = [0.125,0.25,0.5,1.0,2.0]
-		for tmpN in range(5,51,5):
-			for tmpEps in eps_list:
+		startTime = time.time()
+		oldNumber = 0
+		give_information()
+		for N in range(5,51,5):
+			for epsilon in eps_list:
 
 				del OPEN[:]
 				del CLOSED[:]
 				OPEN_Hash.clear()
 				CLOSED_Hash.clear()
 
-				N = tmpN
-				epsilon = tmpEps
-				filename = "./result/8_Puzzle_" + state_name + "_"+str(tmpN) + "_" + str(tmpEps) + "_DWA.txt"
+				filename = "./result/8_Puzzle_" + state_name + "_"+str(N) + "_" + str(epsilon) + "_DWA.txt"
 
 				print "N= " + str(N) + " eps= " + str(epsilon)
 				
-
 				startTime = time.time()
-
 				oldNumber = 0
-				
-				give_information()
-				number , steps = search(startstate,filename)
-				info_thread.cancel()
+				number , steps = search(startstate,filename,float(N),float(epsilon))
 
 				allFile.write(str(N) + "\t" + str(epsilon) + "\t" + str(number)+  "\t" + str(steps) + "\n")
 		allFile.close()
@@ -428,7 +419,7 @@ else:
 
 	oldNumber = 0
 	give_information()
-	search(startstate,filename)
+	search(startstate,filename,N,epsilon)
 
 # WDA* algorithm
 info_thread.cancel()
